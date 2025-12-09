@@ -257,10 +257,18 @@ class Wall(pg.sprite.Sprite): # 追加機能５
         self.image = pg.Surface((w, h)) # 防御壁の大きさ
         self.image.fill((0, 255, 255))  # 防御壁の色
         self.rect = self.image.get_rect() # 防御壁のRect
+        self.time = 40  # 防御壁の持続時間（フレーム数）
 
         between = 50  # こうかとんから防御壁までの距離
         self.rect.centerx = bird.rect.centerx + between # 防御壁のx座標を設定
         self.rect.centery = bird.rect.centery # 防御壁のy座標を設定
+
+    def update(self):
+        #400フレームで防御壁を消す
+        self.time -= 1
+        if self.time <= 0:
+            self.kill()
+
         
 
 def main():
