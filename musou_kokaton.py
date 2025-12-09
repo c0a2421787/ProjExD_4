@@ -241,6 +241,27 @@ class Score:
         self.image = self.font.render(f"Score: {self.value}", 0, self.color)
         screen.blit(self.image, self.rect)
 
+class Wall(pg.sprite.Sprite): # 追加機能５
+    """
+    防御壁に関するクラス
+    こうかとんの前に防御壁を出現させ，着弾を防ぐ
+    """
+    def __init__(self, bird: Bird):
+        """
+        防御壁Surfaceを生成する
+        引数 bird：防御壁を出現させるこうかとん
+        """
+        super().__init__() # スーパークラスの初期化
+        w = 20  # 防御壁の幅
+        h = bird.rect.height*2  # 防御壁の高さ
+        self.image = pg.Surface((w, h)) # 防御壁の大きさ
+        self.image.fill((0, 255, 255))  # 防御壁の色
+        self.rect = self.image.get_rect() # 防御壁のRect
+
+        between = 50  # こうかとんから防御壁までの距離
+        self.rect.centerx = bird.rect.centerx + between # 防御壁のx座標を設定
+        self.rect.centery = bird.rect.centery # 防御壁のy座標を設定
+        
 
 def main():
     pg.display.set_caption("真！こうかとん無双")
@@ -253,6 +274,7 @@ def main():
     beams = pg.sprite.Group()
     exps = pg.sprite.Group()
     emys = pg.sprite.Group()
+    walls = pg.sprite.Group()  # 防御壁グループを作成
 
     tmr = 0
     clock = pg.time.Clock()
@@ -288,7 +310,10 @@ def main():
             pg.display.update()
             time.sleep(2)
             return
-
+        
+        if key_lst[pg.K_s]:  # 「s」キー押下で防御壁発動
+            walls.add(Wall(bird))  # 防御壁を生成
+    
         bird.update(key_lst, screen)
         beams.update()
         beams.draw(screen)
@@ -299,6 +324,10 @@ def main():
         exps.update()
         exps.draw(screen)
         score.update(screen)
+
+        walls.update() # 防御壁を更新 追加機能５
+        walls.draw(screen) # 防御壁を描画 追加機能５
+
         pg.display.update()
         tmr += 1
         clock.tick(50)
