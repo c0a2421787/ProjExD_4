@@ -303,7 +303,7 @@ def main():
     beams = pg.sprite.Group()
     exps = pg.sprite.Group()
     emys = pg.sprite.Group()
-    emp = EMP(emys,bombs,screen,score)
+    emp = EMP(emys,bombs,screen,score)  
 
     tmr = 0
     clock = pg.time.Clock()
